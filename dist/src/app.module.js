@@ -25,9 +25,10 @@ const auth_module_1 = require("./auth/auth.module");
 const usuarios_module_1 = require("./usuarios/usuarios.module");
 const schedule_1 = require("@nestjs/schedule");
 const tareas_module_1 = require("./tareas/tareas.module");
-const ventas_module_1 = require("./ventas/ventas.module");
 const clientes_mailing_model_module_1 = require("./clientes-mailing-model/clientes-mailing-model.module");
 const clientes_module_1 = require("./clientes/clientes.module");
+const clientes_ventas_module_1 = require("./clientes-ventas/clientes-ventas.module");
+const clientes_ventas_detalle_module_1 = require("./clientes-ventas-detalle/clientes-ventas-detalle.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer
@@ -73,8 +74,8 @@ exports.AppModule = AppModule = __decorate([
             auth_module_1.AuthModule,
             usuarios_module_1.UsuariosModule,
             tareas_module_1.TareasModule,
-            ventas_module_1.VentasModule,
-            clientes_mailing_model_module_1.ClientesMailingModelModule, clientes_module_1.ClientesModule
+            clientes_ventas_module_1.ClientesVentasModule,
+            clientes_mailing_model_module_1.ClientesMailingModelModule, clientes_module_1.ClientesModule, clientes_ventas_detalle_module_1.ClientesVentasDetalleModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -1,0 +1,82 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+
+import { Between, Repository } from 'typeorm';
+import { ClienteVenta } from './entities/cliente-venta.entity';
+
+
+@Injectable()
+export class ClientesVentasService {
+  constructor(
+    @InjectRepository(ClienteVenta,'sqlserverConnection')
+    private ClientesVentasRepository: Repository<ClienteVenta>,
+  ){}
+  
+  async findAll() {
+    return this.ClientesVentasRepository.find();
+  }
+
+  findOne(id: number) {
+    return `This action returns a #${id} venta`;
+  }
+
+  async findByFecha(desde: Date, hasta: Date): Promise<ClienteVenta[]> {
+    return this.ClientesVentasRepository.find({
+      where: {
+        Fecha: Between(desde, hasta),
+      },
+      order: {
+        Fecha: 'ASC',
+      },
+    });
+  }
+   async findByFechaConCliente(desde: Date, hasta: Date) {
+    return this.ClientesVentasRepository
+      .createQueryBuilder('venta')
+      .innerJoin('Clientes_Per', 'cliente', 'venta.CodCliente = cliente.CodCliente')
+      .where('venta.Fecha BETWEEN :desde AND :hasta', { desde, hasta })
+      .select([
+        'venta.CodVenta',
+        'venta.Fecha',
+        'venta.Total',
+        'venta.FormaPago',
+        'venta.Estado',
+        'cliente.Nombre',
+        'cliente.CodSucursal',
+        'cliente.NroDoc',
+        'cliente.Telefonos',
+      ])
+      .orderBy('venta.Fecha', 'ASC')
+      .getRawMany();
+  }
+  async findVentaCompleta(codVenta: number) {
+  const venta = await this.ClientesVentasRepository.findOne({
+    where: { CodVenta: codVenta },
+    relations: ['cliente', 'detalles'],
+  });
+
+  if (!venta) return null;
+
+  return {
+    CodVenta: venta.CodVenta,
+    Fecha: venta.Fecha,
+    Total: venta.Total,
+    FormaPago: venta.FormaPago?.trim(),
+    Estado: venta.Estado,
+    cliente: {
+      codCliente: venta.cliente?.codCliente,
+      nombre: venta.cliente?.nombre,
+      nroDoc: venta.cliente?.nroDoc,
+      telefonos: venta.cliente?.telefonos,
+    },
+    detalles: venta.detalles.map(d => ({
+      CodProducto: d.CodProducto,
+      Cantidad: d.Cantidad,
+      PrecioUnit: d.PrecioUnit,
+      Subtotal: Number(d.Cantidad) * Number(d.PrecioUnit),
+    })),
+  };
+}
+
+
+}

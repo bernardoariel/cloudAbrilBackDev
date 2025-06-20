@@ -16,9 +16,10 @@ import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TareasModule } from './tareas/tareas.module';
-import { VentasModule } from './ventas/ventas.module';
 import { ClientesMailingModelModule } from './clientes-mailing-model/clientes-mailing-model.module';
 import { ClientesModule } from './clientes/clientes.module';
+import { ClientesVentasModule } from './clientes-ventas/clientes-ventas.module';
+import { ClientesVentasDetalleModule } from './clientes-ventas-detalle/clientes-ventas-detalle.module';
 
 
 @Module({
@@ -73,8 +74,8 @@ import { ClientesModule } from './clientes/clientes.module';
     AuthModule,
     UsuariosModule, 
     TareasModule, 
-    VentasModule, 
-    ClientesMailingModelModule, ClientesModule
+    ClientesVentasModule, 
+    ClientesMailingModelModule, ClientesModule, ClientesVentasDetalleModule
   ],
   controllers: [AppController],
   providers: [AppService],

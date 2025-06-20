@@ -1,20 +1,21 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
-import { VentasService } from './ventas.service';
+
 import { ApiTags } from '@nestjs/swagger';
+import { ClientesVentasService } from './clientes-ventas.service';
 
 @ApiTags('Abril-SqlServer')
-@Controller('ventas')
-export class VentasController {
-  constructor(private readonly ventasService: VentasService) {}
+@Controller('clientes-ventas')
+export class ClientesVentasController {
+  constructor(private readonly clientesVentasService: ClientesVentasService) {}
 
   @Get()
   findAll() {
-    return this.ventasService.findAll();
+    return this.clientesVentasService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.ventasService.findOne(+id);
+    return this.clientesVentasService.findOne(+id);
   }
   @Get('/filtro/fecha')
   async findByFecha(
@@ -31,7 +32,10 @@ export class VentasController {
     if (dias > 30) {
       throw new Error('The date range cannot exceed 30 days');
     }
-    return this.ventasService.findByFecha(fechaDesde, fechaHasta);
+    return this.clientesVentasService.findByFechaConCliente(fechaDesde, fechaHasta);
   }
-
+  @Get('completa/:codVenta')
+async findVentaCompleta(@Param('codVenta') codVenta: number) {
+  return this.clientesVentasService.findVentaCompleta(+codVenta);
+}
 }

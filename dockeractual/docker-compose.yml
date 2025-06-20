@@ -1,0 +1,29 @@
+﻿version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx_proxy
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./html:/usr/share/nginx/html
+      - ./certs:/etc/nginx/certs  # Para los certificados SSL
+    networks:
+      - web
+    restart: always
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    volumes:
+      - ./certs:/etc/letsencrypt  # Ruta donde Certbot guardará los certificados
+      - ./html:/usr/share/nginx/html  # Carpeta donde servirá los archivos de desafío
+    command: certonly --webroot --webroot-path=/usr/share/nginx/html --email tu-email@dominio.com --agree-tos --no-eff-email -d arielbernardo.com -d www.arielbernardo.com
+    networks:
+      - web
+
+networks:
+  web:
+    external: false

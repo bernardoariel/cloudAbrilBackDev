@@ -35,7 +35,7 @@ export class ClientesVentasController {
     return this.clientesVentasService.findByFechaConCliente(fechaDesde, fechaHasta);
   }
   @Get('completa/:codVenta')
-async findVentaCompleta(@Param('codVenta') codVenta: number) {
-  return this.clientesVentasService.findVentaCompleta(+codVenta);
-}
+  async findVentaCompleta(@Param('codVenta') codVenta: number) {
+    return this.clientesVentasService.findVentaCompleta(+codVenta);
+  }
 }

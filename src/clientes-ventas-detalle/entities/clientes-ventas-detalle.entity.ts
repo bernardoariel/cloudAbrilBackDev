@@ -1,5 +1,6 @@
 import { ClienteVenta } from 'src/clientes-ventas/entities/cliente-venta.entity';
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Producto } from 'src/productos/entities/producto.entity';
 
 @Entity('Clientes_VenDet')
 export class ClienteVentaDetalle {
@@ -44,4 +45,8 @@ export class ClienteVentaDetalle {
   @ManyToOne(() => ClienteVenta, venta => venta.detalles)
   @JoinColumn({ name: 'CodVenta', referencedColumnName: 'CodVenta' })
   venta: ClienteVenta;
+
+  @ManyToOne(() => Producto)
+  @JoinColumn({ name: 'CodProducto', referencedColumnName: 'CodProducto' })
+  producto: Producto;
 }

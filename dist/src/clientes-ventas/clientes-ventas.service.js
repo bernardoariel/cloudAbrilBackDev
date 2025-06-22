@@ -59,7 +59,7 @@ let ClientesVentasService = class ClientesVentasService {
     async findVentaCompleta(codVenta) {
         const venta = await this.ClientesVentasRepository.findOne({
             where: { CodVenta: codVenta },
-            relations: ['cliente', 'detalles'],
+            relations: ['cliente', 'detalles', 'detalles.producto'],
         });
         if (!venta)
             return null;
@@ -77,6 +77,7 @@ let ClientesVentasService = class ClientesVentasService {
             },
             detalles: venta.detalles.map(d => ({
                 CodProducto: d.CodProducto,
+                NombreProducto: d.producto?.Producto,
                 Cantidad: d.Cantidad,
                 PrecioUnit: d.PrecioUnit,
                 Subtotal: Number(d.Cantidad) * Number(d.PrecioUnit),

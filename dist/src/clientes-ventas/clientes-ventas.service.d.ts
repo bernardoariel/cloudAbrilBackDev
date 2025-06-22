@@ -21,6 +21,7 @@ export declare class ClientesVentasService {
         };
         detalles: {
             CodProducto: number;
+            NombreProducto: string;
             Cantidad: number;
             PrecioUnit: number;
             Subtotal: number;

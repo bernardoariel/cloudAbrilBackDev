@@ -1,4 +1,5 @@
 import { ClienteVenta } from 'src/clientes-ventas/entities/cliente-venta.entity';
+import { Producto } from 'src/productos/entities/producto.entity';
 export declare class ClienteVentaDetalle {
     CodVenta: number;
     CodProducto: number;
@@ -13,4 +14,5 @@ export declare class ClienteVentaDetalle {
     FecEntrega: Date;
     ProdCombo: string;
     venta: ClienteVenta;
+    producto: Producto;
 }

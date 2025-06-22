@@ -19,6 +19,7 @@ export declare class ClientesVentasController {
         };
         detalles: {
             CodProducto: number;
+            NombreProducto: string;
             Cantidad: number;
             PrecioUnit: number;
             Subtotal: number;

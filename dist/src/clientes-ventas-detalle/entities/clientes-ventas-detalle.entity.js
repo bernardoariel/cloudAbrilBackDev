@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClienteVentaDetalle = void 0;
 const cliente_venta_entity_1 = require("../../clientes-ventas/entities/cliente-venta.entity");
 const typeorm_1 = require("typeorm");
+const producto_entity_1 = require("../../productos/entities/producto.entity");
 let ClienteVentaDetalle = class ClienteVentaDetalle {
 };
 exports.ClienteVentaDetalle = ClienteVentaDetalle;
@@ -68,6 +69,11 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: 'CodVenta', referencedColumnName: 'CodVenta' }),
     __metadata("design:type", cliente_venta_entity_1.ClienteVenta)
 ], ClienteVentaDetalle.prototype, "venta", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => producto_entity_1.Producto),
+    (0, typeorm_1.JoinColumn)({ name: 'CodProducto', referencedColumnName: 'CodProducto' }),
+    __metadata("design:type", producto_entity_1.Producto)
+], ClienteVentaDetalle.prototype, "producto", void 0);
 exports.ClienteVentaDetalle = ClienteVentaDetalle = __decorate([
     (0, typeorm_1.Entity)('Clientes_VenDet')
 ], ClienteVentaDetalle);

@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { Between, Repository } from 'typeorm';
 import { ClienteVenta } from './entities/cliente-venta.entity';
+import { Producto } from 'src/productos/entities/producto.entity';
+import { ManyToOne, JoinColumn } from 'typeorm';
 
 
 @Injectable()
@@ -52,7 +54,7 @@ export class ClientesVentasService {
   async findVentaCompleta(codVenta: number) {
   const venta = await this.ClientesVentasRepository.findOne({
     where: { CodVenta: codVenta },
-    relations: ['cliente', 'detalles'],
+    relations: ['cliente', 'detalles', 'detalles.producto'],
   });
 
   if (!venta) return null;
@@ -71,6 +73,7 @@ export class ClientesVentasService {
     },
     detalles: venta.detalles.map(d => ({
       CodProducto: d.CodProducto,
+      NombreProducto: d.producto?.Producto,
       Cantidad: d.Cantidad,
       PrecioUnit: d.PrecioUnit,
       Subtotal: Number(d.Cantidad) * Number(d.PrecioUnit),

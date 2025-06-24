@@ -44,7 +44,7 @@ export class ClientesVentasService {
       .innerJoin('Clientes_Per', 'cliente', 'venta.CodCliente = cliente.CodCliente')
       .leftJoin(
         qb => qb
-          .select('c.CodCliente, c.NombreCont, c.ApellidoCont')
+          .select('c.CodCliente, c.NombreCont, c.ApellidoCont, c.Caracteristica, c.Numero')
           .from('Clientes_Contactos', 'c')
           .where("c.EsPrincipal = 'S'"),
         'contacto',
@@ -61,9 +61,9 @@ export class ClientesVentasService {
         'cliente.Nombre',
         'cliente.CodSucursal',
         'cliente.NroDoc',
-        'cliente.Telefonos',
         'contacto.NombreCont',
         'contacto.ApellidoCont',
+        "CONCAT(contacto.Caracteristica, contacto.Numero) as Telefonos",
       ])
       .orderBy('venta.Fecha', 'ASC')
       .getRawMany();

@@ -33,20 +33,37 @@ export class ClientesVentasService {
     });
   }
    async findByFechaConCliente(desde: Date, hasta: Date) {
+    const fechaDesde = new Date(desde);
+    fechaDesde.setHours(0, 0, 0, 0);
+
+    const fechaHasta = new Date(hasta);
+    fechaHasta.setHours(23, 59, 59, 999);
+
     return this.ClientesVentasRepository
       .createQueryBuilder('venta')
       .innerJoin('Clientes_Per', 'cliente', 'venta.CodCliente = cliente.CodCliente')
-      .where('venta.Fecha BETWEEN :desde AND :hasta', { desde, hasta })
+      .leftJoin(
+        qb => qb
+          .select('c.CodCliente, c.NombreCont, c.ApellidoCont')
+          .from('Clientes_Contactos', 'c')
+          .where("c.EsPrincipal = 'S'"),
+        'contacto',
+        'venta.CodCliente = contacto.CodCliente'
+      )
+      .where('venta.Fecha BETWEEN :desde AND :hasta', { desde: fechaDesde, hasta: fechaHasta })
       .select([
         'venta.CodVenta',
         'venta.Fecha',
         'venta.Total',
         'venta.FormaPago',
-        'venta.Estado',
+        'venta.CodVendedor',
+        'venta.CodCliente',
         'cliente.Nombre',
         'cliente.CodSucursal',
         'cliente.NroDoc',
         'cliente.Telefonos',
+        'contacto.NombreCont',
+        'contacto.ApellidoCont',
       ])
       .orderBy('venta.Fecha', 'ASC')
       .getRawMany();

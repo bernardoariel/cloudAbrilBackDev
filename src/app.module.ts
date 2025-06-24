@@ -20,6 +20,7 @@ import { ClientesMailingModelModule } from './clientes-mailing-model/clientes-ma
 import { ClientesModule } from './clientes/clientes.module';
 import { ClientesVentasModule } from './clientes-ventas/clientes-ventas.module';
 import { ClientesVentasDetalleModule } from './clientes-ventas-detalle/clientes-ventas-detalle.module';
+import { ClientesContactosModule } from './clientes-contactos/clientes-contactos.module';
 
 
 @Module({
@@ -75,7 +76,7 @@ import { ClientesVentasDetalleModule } from './clientes-ventas-detalle/clientes-
     UsuariosModule, 
     TareasModule, 
     ClientesVentasModule, 
-    ClientesMailingModelModule, ClientesModule, ClientesVentasDetalleModule
+    ClientesMailingModelModule, ClientesModule, ClientesVentasDetalleModule, ClientesContactosModule
   ],
   controllers: [AppController],
   providers: [AppService],

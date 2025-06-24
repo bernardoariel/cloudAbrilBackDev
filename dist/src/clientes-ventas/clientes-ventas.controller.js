@@ -27,8 +27,8 @@ let ClientesVentasController = class ClientesVentasController {
         return this.clientesVentasService.findOne(+id);
     }
     async findByFecha(desde, hasta) {
-        const fechaDesde = new Date(desde);
-        const fechaHasta = new Date(hasta);
+        const fechaDesde = new Date(`${desde}T00:00:00`);
+        const fechaHasta = new Date(`${hasta}T00:00:00`);
         if (isNaN(fechaDesde.getTime()) || isNaN(fechaHasta.getTime())) {
             throw new Error('Invalid date format');
         }

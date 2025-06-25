@@ -32,6 +32,7 @@ const clientes_ventas_detalle_module_1 = require("./clientes-ventas-detalle/clie
 const clientes_contactos_module_1 = require("./clientes-contactos/clientes-contactos.module");
 const clientes_creditos_module_1 = require("./clientes-creditos/clientes-creditos.module");
 const clientes_metpagos_module_1 = require("./clientes-metpagos/clientes-metpagos.module");
+const vendedores_module_1 = require("./vendedores/vendedores.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer
@@ -78,7 +79,8 @@ exports.AppModule = AppModule = __decorate([
             usuarios_module_1.UsuariosModule,
             tareas_module_1.TareasModule,
             clientes_ventas_module_1.ClientesVentasModule,
-            clientes_mailing_model_module_1.ClientesMailingModelModule, clientes_module_1.ClientesModule, clientes_ventas_detalle_module_1.ClientesVentasDetalleModule, clientes_contactos_module_1.ClientesContactosModule, clientes_creditos_module_1.ClientesCreditosModule, clientes_metpagos_module_1.ClientesMetPagosModule
+            clientes_mailing_model_module_1.ClientesMailingModelModule, clientes_module_1.ClientesModule, clientes_ventas_detalle_module_1.ClientesVentasDetalleModule, clientes_contactos_module_1.ClientesContactosModule, clientes_creditos_module_1.ClientesCreditosModule, clientes_metpagos_module_1.ClientesMetPagosModule,
+            vendedores_module_1.VendedoresModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

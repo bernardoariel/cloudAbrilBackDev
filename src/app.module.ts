@@ -22,6 +22,7 @@ import { ClientesVentasModule } from './clientes-ventas/clientes-ventas.module';
 import { ClientesVentasDetalleModule } from './clientes-ventas-detalle/clientes-ventas-detalle.module';
 import { ClientesContactosModule } from './clientes-contactos/clientes-contactos.module';
 import { ClientesCreditosModule } from './clientes-creditos/clientes-creditos.module';
+import { ClientesMetPagosModule } from './clientes-metpagos/clientes-metpagos.module';
 
 
 @Module({
@@ -77,7 +78,7 @@ import { ClientesCreditosModule } from './clientes-creditos/clientes-creditos.mo
     UsuariosModule, 
     TareasModule, 
     ClientesVentasModule, 
-    ClientesMailingModelModule, ClientesModule, ClientesVentasDetalleModule, ClientesContactosModule, ClientesCreditosModule
+    ClientesMailingModelModule, ClientesModule, ClientesVentasDetalleModule, ClientesContactosModule, ClientesCreditosModule, ClientesMetPagosModule
   ],
   controllers: [AppController],
   providers: [AppService],

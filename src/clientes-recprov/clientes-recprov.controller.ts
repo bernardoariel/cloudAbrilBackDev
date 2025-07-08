@@ -46,6 +46,37 @@ export class ClientesRecProvController {
     if (isNaN(fechaDesde.getTime()) || isNaN(fechaHasta.getTime())) {
       throw new Error('Invalid date format');
     }
-    return this.clientesRecProvService.findByFecha(fechaDesde, fechaHasta);
+    return this.clientesRecProvService.findByFechaConCliente(fechaDesde, fechaHasta);
+  }
+
+  @Get('test-simple/:codSucRecibo')
+  async testSimple(@Param('codSucRecibo') codSucRecibo: string) {
+    try {
+      const queryRunner = this.clientesRecProvService['clienteRecProvRepository'].manager.connection.createQueryRunner();
+      
+      const query = `
+        SELECT TOP 1 *
+        FROM Clientes_RecProv 
+        WHERE CodSucRecibo = @P0
+      `;
+      
+      const result = await queryRunner.query(query, [codSucRecibo]);
+      await queryRunner.release();
+      
+      return {
+        success: true,
+        data: result[0] || null
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  @Get('completa/:codSucRecibo')
+  async findReciboCompleto(@Param('codSucRecibo') codSucRecibo: string) {
+    return this.clientesRecProvService.findReciboCompleto(codSucRecibo);
   }
 } 

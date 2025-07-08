@@ -8,8 +8,8 @@ export class ClientesCreditosController {
   constructor(private readonly clientesCreditosService: ClientesCreditosService) {}
 
   @Get('credito/:codCredito')
-  findByCodCredito(@Param('codCredito') codCredito: number) {
-    return this.clientesCreditosService.findByCodCredito(+codCredito);
+  findByCodCredito(@Param('codCredito') codCredito: string) {
+    return this.clientesCreditosService.findByCodCredito(codCredito);
   }
 
   @Get('cliente/:codCliente')

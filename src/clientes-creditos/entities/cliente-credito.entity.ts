@@ -5,8 +5,8 @@ export class ClienteCredito {
   @PrimaryColumn()
   CodSucCred: number;
 
-  @PrimaryColumn()
-  CodCredito: number;
+  @PrimaryColumn({ type: 'varchar' })
+  CodCredito: string;
 
   @Column()
   CodCliente: number;

@@ -10,7 +10,7 @@ export class ClientesCreditosService {
     private clientesCreditosRepository: Repository<ClienteCredito>,
   ) {}
 
-  findByCodCredito(codCredito: number) {
+  findByCodCredito(codCredito: string) {
     return this.clientesCreditosRepository.find({
       where: { CodCredito: codCredito },
     });

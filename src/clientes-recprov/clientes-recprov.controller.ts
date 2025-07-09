@@ -79,4 +79,9 @@ export class ClientesRecProvController {
   async findReciboCompleto(@Param('codSucRecibo') codSucRecibo: string) {
     return this.clientesRecProvService.findReciboCompleto(codSucRecibo);
   }
+
+  @Get('por-credito/:codCredito')
+  async findByCodCredito(@Param('codCredito') codCredito: string) {
+    return this.clientesRecProvService.findByCodCredito(codCredito);
+  }
 } 

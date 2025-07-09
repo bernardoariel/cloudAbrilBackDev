@@ -23,7 +23,7 @@ export class ClientesRecProvService {
 
   async findOne(codSucRecibo: string): Promise<ClienteRecProv> {
     try {
-      return this.clienteRecProvRepository.findOne({ where: { codSucRecibo } });
+      return this.clienteRecProvRepository.findOne({ where: { codSucRecibo: Number(codSucRecibo) } });
     } catch (error) {
       this.logger.error('Error en findOne:', error);
       throw error;
@@ -129,5 +129,14 @@ export class ClientesRecProvService {
       ])
       .orderBy('recibo.Fecha', 'ASC')
       .getRawMany();
+  }
+
+  async findByCodCredito(codCredito: string): Promise<ClienteRecProv[]> {
+    try {
+      return this.clienteRecProvRepository.find({ where: { codCredito } });
+    } catch (error) {
+      this.logger.error('Error en findByCodCredito:', error);
+      throw error;
+    }
   }
 } 

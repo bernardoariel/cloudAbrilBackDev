@@ -26,6 +26,7 @@ import { ClientesMetPagosModule } from './clientes-metpagos/clientes-metpagos.mo
 import { VendedoresModule } from './vendedores/vendedores.module';
 import { CobradoresModule } from './cobradores/cobradores.module';
 import { ClientesRecProvModule } from './clientes-recprov/clientes-recprov.module';
+import { ClientesCreditosVencimientosModule } from './clientes-creditos-vencimientos/clientes-creditos-vencimientos.module';
 
 
 @Module({
@@ -84,7 +85,8 @@ import { ClientesRecProvModule } from './clientes-recprov/clientes-recprov.modul
     ClientesMailingModelModule, ClientesModule, ClientesVentasDetalleModule, ClientesContactosModule, ClientesCreditosModule, ClientesMetPagosModule,
     VendedoresModule,
     CobradoresModule,
-    ClientesRecProvModule
+    ClientesRecProvModule,
+    ClientesCreditosVencimientosModule
   ],
   controllers: [AppController],
   providers: [AppService],

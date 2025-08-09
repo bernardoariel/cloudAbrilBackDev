@@ -36,6 +36,7 @@ const vendedores_module_1 = require("./vendedores/vendedores.module");
 const cobradores_module_1 = require("./cobradores/cobradores.module");
 const clientes_recprov_module_1 = require("./clientes-recprov/clientes-recprov.module");
 const clientes_creditos_vencimientos_module_1 = require("./clientes-creditos-vencimientos/clientes-creditos-vencimientos.module");
+const clientes_recpag_module_1 = require("./clientes-recpag/clientes-recpag.module");
 let AppModule = class AppModule {
     configure(consumer) {
         consumer
@@ -86,7 +87,8 @@ exports.AppModule = AppModule = __decorate([
             vendedores_module_1.VendedoresModule,
             cobradores_module_1.CobradoresModule,
             clientes_recprov_module_1.ClientesRecProvModule,
-            clientes_creditos_vencimientos_module_1.ClientesCreditosVencimientosModule
+            clientes_creditos_vencimientos_module_1.ClientesCreditosVencimientosModule,
+            clientes_recpag_module_1.ClientesRecPagModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

@@ -27,6 +27,7 @@ import { VendedoresModule } from './vendedores/vendedores.module';
 import { CobradoresModule } from './cobradores/cobradores.module';
 import { ClientesRecProvModule } from './clientes-recprov/clientes-recprov.module';
 import { ClientesCreditosVencimientosModule } from './clientes-creditos-vencimientos/clientes-creditos-vencimientos.module';
+import { ClientesRecPagModule } from './clientes-recpag/clientes-recpag.module';
 
 
 @Module({
@@ -79,22 +80,23 @@ import { ClientesCreditosVencimientosModule } from './clientes-creditos-vencimie
     FormaPagoPlanesModule,
     FormaPagoModule,
     AuthModule,
-    UsuariosModule, 
-    TareasModule, 
-    ClientesVentasModule, 
+    UsuariosModule,
+    TareasModule,
+    ClientesVentasModule,
     ClientesMailingModelModule, ClientesModule, ClientesVentasDetalleModule, ClientesContactosModule, ClientesCreditosModule, ClientesMetPagosModule,
     VendedoresModule,
     CobradoresModule,
     ClientesRecProvModule,
-    ClientesCreditosVencimientosModule
+    ClientesCreditosVencimientosModule,
+    ClientesRecPagModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-configure(consumer: MiddlewareConsumer) {
+  configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(CheckDatabaseConnectionMiddleware)
-      .forRoutes('*'); 
+      .forRoutes('*');
   }
 }

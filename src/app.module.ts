@@ -28,6 +28,7 @@ import { CobradoresModule } from './cobradores/cobradores.module';
 import { ClientesRecProvModule } from './clientes-recprov/clientes-recprov.module';
 import { ClientesCreditosVencimientosModule } from './clientes-creditos-vencimientos/clientes-creditos-vencimientos.module';
 import { ClientesRecPagModule } from './clientes-recpag/clientes-recpag.module';
+import { LoginModule } from './login/login.module';
 
 
 @Module({
@@ -88,7 +89,8 @@ import { ClientesRecPagModule } from './clientes-recpag/clientes-recpag.module';
     CobradoresModule,
     ClientesRecProvModule,
     ClientesCreditosVencimientosModule,
-    ClientesRecPagModule
+    ClientesRecPagModule,
+    LoginModule
   ],
   controllers: [AppController],
   providers: [AppService],

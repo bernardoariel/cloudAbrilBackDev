@@ -1,11 +1,11 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ClientesCreditosService } from './clientes-creditos.service';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Abril-SqlServer')
 @Controller('clientes-creditos')
 export class ClientesCreditosController {
-  constructor(private readonly clientesCreditosService: ClientesCreditosService) {}
+  constructor(private readonly clientesCreditosService: ClientesCreditosService) { }
 
   @Get('credito/:codCredito')
   findByCodCredito(@Param('codCredito') codCredito: string) {
@@ -21,4 +21,14 @@ export class ClientesCreditosController {
   findByCodVenta(@Param('codVenta') codVenta: string) {
     return this.clientesCreditosService.findByCodVenta(codVenta);
   }
+  @Get('venta/:codCliente/saldo')
+  findByCodClienteWithSaldo(
+    @Param('codCliente') codCliente: number,
+    @Query('condicion') condicion: 'mayor' | 'menor' = 'mayor',
+  ) {
+    return this.clientesCreditosService.findByCodClienteWithSaldo(+codCliente, condicion);
+  }
+
+
+
 } 

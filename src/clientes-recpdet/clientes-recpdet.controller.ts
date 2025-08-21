@@ -2,43 +2,49 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ClientesRecpdetService } from './clientes-recpdet.service';
 import { CreateClienteRecpdetDto } from './dto/create-cliente-recpdet.dto';
 import { UpdateClienteRecpdetDto } from './dto/update-cliente-recpdet.dto';
+import { ResumenCreditoDto } from './dto/cuotas-pendientes.dto';
 
 @Controller('clientes-recpdet')
 export class ClientesRecpdetController {
-  constructor(private readonly clientesRecpdetService: ClientesRecpdetService) {}
+    constructor(private readonly clientesRecpdetService: ClientesRecpdetService) { }
 
-  @Post()
-  create(@Body() createClienteRecpdetDto: CreateClienteRecpdetDto) {
-    return this.clientesRecpdetService.create(createClienteRecpdetDto);
-  }
+    @Post()
+    create(@Body() createClienteRecpdetDto: CreateClienteRecpdetDto) {
+        return this.clientesRecpdetService.create(createClienteRecpdetDto);
+    }
 
-  @Get()
-  findAll() {
-    return this.clientesRecpdetService.findAll();
-  }
+    @Get()
+    findAll() {
+        return this.clientesRecpdetService.findAll();
+    }
 
-  @Get('recibo/:codReciboOf')
-  findByReciboOf(@Param('codReciboOf') codReciboOf: string) {
-    return this.clientesRecpdetService.findByReciboOf(codReciboOf);
-  }
+    @Get('recibo/:codReciboOf')
+    findByReciboOf(@Param('codReciboOf') codReciboOf: string) {
+        return this.clientesRecpdetService.findByReciboOf(codReciboOf);
+    }
 
-  @Get('credito/:codCredito')
-  findByCredito(@Param('codCredito') codCredito: string) {
-    return this.clientesRecpdetService.findByCredito(codCredito);
-  }
+    @Get('credito/:codCredito')
+    findByCredito(@Param('codCredito') codCredito: string) {
+        return this.clientesRecpdetService.findByCredito(codCredito);
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clientesRecpdetService.findOne(+id);
-  }
+    @Get('analisis-credito/:codCredito')
+    async analizarCuotasPendientes(@Param('codCredito') codCredito: string): Promise<ResumenCreditoDto> {
+        return this.clientesRecpdetService.analizarCuotasPendientes(codCredito);
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClienteRecpdetDto: UpdateClienteRecpdetDto) {
-    return this.clientesRecpdetService.update(+id, updateClienteRecpdetDto);
-  }
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        return this.clientesRecpdetService.findOne(+id);
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clientesRecpdetService.remove(+id);
-  }
+    @Patch(':id')
+    update(@Param('id') id: string, @Body() updateClienteRecpdetDto: UpdateClienteRecpdetDto) {
+        return this.clientesRecpdetService.update(+id, updateClienteRecpdetDto);
+    }
+
+    @Delete(':id')
+    remove(@Param('id') id: string) {
+        return this.clientesRecpdetService.remove(+id);
+    }
 }

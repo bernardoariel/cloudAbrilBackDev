@@ -3,6 +3,8 @@ import { ClientesRecpdetService } from './clientes-recpdet.service';
 import { CreateClienteRecpdetDto } from './dto/create-cliente-recpdet.dto';
 import { UpdateClienteRecpdetDto } from './dto/update-cliente-recpdet.dto';
 import { ResumenCreditoDto } from './dto/cuotas-pendientes.dto';
+import { CreditosVencidosDto } from './dto/creditos-vencidos.dto';
+import { FiltrosCreditosVencidosDto } from './dto/filtros-creditos-vencidos.dto';
 
 @Controller('clientes-recpdet')
 export class ClientesRecpdetController {
@@ -31,6 +33,14 @@ export class ClientesRecpdetController {
     @Get('analisis-credito/:codCredito')
     async analizarCuotasPendientes(@Param('codCredito') codCredito: string): Promise<ResumenCreditoDto> {
         return this.clientesRecpdetService.analizarCuotasPendientes(codCredito);
+    }
+
+    @Get('creditos-vencidos')
+    async obtenerCreditosVencidos(@Query() filtros: FiltrosCreditosVencidosDto): Promise<CreditosVencidosDto> {
+        return this.clientesRecpdetService.obtenerCreditosVencidosOptimizado(
+            filtros.fechaDesde,
+            filtros.fechaHasta
+        );
     }
 
     @Get(':id')

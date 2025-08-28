@@ -6,6 +6,10 @@ import { CreateClienteRecpdetDto } from './dto/create-cliente-recpdet.dto';
 import { UpdateClienteRecpdetDto } from './dto/update-cliente-recpdet.dto';
 import { CuotaPendienteDto, ResumenCreditoDto } from './dto/cuotas-pendientes.dto';
 import { ClienteCreditoVencimiento } from '../clientes-creditos-vencimientos/entities/cliente-credito-vencimiento.entity';
+import { ClienteCredito } from '../clientes-creditos/entities/cliente-credito.entity';
+import { CreditosVencidosDto, CreditoVencidoResumen } from './dto/creditos-vencidos.dto';
+import { Cliente } from '../clientes/entities/cliente.entity';
+import { obtenerCreditosVencidosOptimizado } from './utils/creditos-vencidos-optimizado';
 
 @Injectable()
 export class ClientesRecpdetService {
@@ -14,6 +18,10 @@ export class ClientesRecpdetService {
         private clienteRecpdetRepository: Repository<ClienteRecpdet>,
         @InjectRepository(ClienteCreditoVencimiento, 'sqlserverConnection')
         private vencimientosRepository: Repository<ClienteCreditoVencimiento>,
+        @InjectRepository(ClienteCredito, 'sqlserverConnection')
+        private creditosRepository: Repository<ClienteCredito>,
+        @InjectRepository(Cliente, 'sqlserverConnection')
+        private clientesRepository: Repository<Cliente>,
     ) { }
 
     async create(createClienteRecpdetDto: CreateClienteRecpdetDto): Promise<ClienteRecpdet> {
@@ -182,5 +190,120 @@ export class ClientesRecpdetService {
             proximaCuotaVencida,
             detalle
         };
+    }
+
+    async obtenerCreditosVencidos(): Promise<CreditosVencidosDto> {
+        // Paso 1: Obtener todos los vencimientos que estén vencidos y no pagados
+        const hoy = new Date();
+
+        // Obtener todos los vencimientos cuya fecha es menor a hoy
+        const vencimientosVencidos = await this.vencimientosRepository
+            .createQueryBuilder('venc')
+            .where('venc.Vencimiento < :fecha', { fecha: hoy })
+            .orderBy('venc.CodCredito', 'ASC')
+            .addOrderBy('venc.NCuota', 'ASC')
+            .getMany();
+
+        // Organizamos los vencimientos por crédito
+        const vencimientosPorCredito = new Map<string, ClienteCreditoVencimiento[]>();
+
+        for (const vencimiento of vencimientosVencidos) {
+            if (!vencimientosPorCredito.has(vencimiento.CodCredito)) {
+                vencimientosPorCredito.set(vencimiento.CodCredito, []);
+            }
+            vencimientosPorCredito.get(vencimiento.CodCredito).push(vencimiento);
+        }
+
+        // Paso 2: Para cada crédito, verificar si hay pagos asociados
+        const creditosVencidos: CreditoVencidoResumen[] = [];
+        let montoTotalVencido = 0;
+
+        for (const [codCredito, vencimientosCredito] of vencimientosPorCredito.entries()) {
+            // Obtener pagos para este crédito
+            const pagos = await this.clienteRecpdetRepository.find({
+                where: { codCredito }
+            });
+
+            // Crear mapa de pagos por número de cuota
+            const pagosPorCuota = new Map<number, ClienteRecpdet>();
+            pagos.forEach(pago => {
+                if (pago.nroCuota) {
+                    pagosPorCuota.set(pago.nroCuota, pago);
+                }
+            });
+
+            // Verificar si hay vencimientos no pagados
+            const vencimientosNoPagados = vencimientosCredito.filter(
+                venc => !pagosPorCuota.has(venc.NCuota)
+            );
+
+            if (vencimientosNoPagados.length > 0) {
+                // Este crédito tiene vencimientos no pagados
+                // Obtener información del crédito
+                const credito = await this.creditosRepository.findOne({
+                    where: { CodCredito: codCredito }
+                });
+
+                if (credito) {
+                    let cliente = null;
+                    try {
+                        cliente = await this.clientesRepository.findOne({
+                            where: { codCliente: credito.CodCliente.toString() }
+                        });
+                    } catch (error) {
+                        // Si no se encuentra el cliente, continuamos sin el nombre
+                    }
+
+                    // Encontrar la primera cuota vencida no pagada
+                    const proximaCuota = vencimientosNoPagados[0];
+                    const diasVencidos = Math.floor(
+                        (hoy.getTime() - new Date(proximaCuota.Vencimiento).getTime()) / (1000 * 60 * 60 * 24)
+                    );
+
+                    // Sumar al monto total vencido
+                    montoTotalVencido += Number(proximaCuota.Cuota_Total.toFixed(2));
+
+                    // Agregar este crédito a la lista
+                    creditosVencidos.push({
+                        codCredito,
+                        codCliente: credito.CodCliente,
+                        nombreCliente: cliente ? cliente.nombre : undefined,
+                        fechaCredito: credito.Fecha,
+                        montoTotal: Number(credito.MontoCapital.toFixed(2)),
+                        saldoCapital: Number(credito.SaldoCapital.toFixed(2)),
+                        cantidadCuotas: credito.CantCuotas,
+                        cuotasVencidas: vencimientosNoPagados.length,
+                        proximaCuotaVencida: {
+                            nroCuota: proximaCuota.NCuota,
+                            fechaVencimiento: new Date(proximaCuota.Vencimiento),
+                            monto: Number(proximaCuota.Cuota_Total.toFixed(2)),
+                            diasVencidos
+                        }
+                    });
+                }
+            }
+        }
+
+        // Ordenar los créditos por días vencidos (mayor a menor)
+        creditosVencidos.sort((a, b) =>
+            b.proximaCuotaVencida.diasVencidos - a.proximaCuotaVencida.diasVencidos
+        );
+
+        return {
+            totalCreditosVencidos: creditosVencidos.length,
+            montoTotalVencido: Number(montoTotalVencido.toFixed(2)),
+            creditos: creditosVencidos
+        };
+    }
+
+    async obtenerCreditosVencidosOptimizado(
+        fechaDesde?: string,
+        fechaHasta?: string
+    ): Promise<CreditosVencidosDto> {
+        return obtenerCreditosVencidosOptimizado(
+            this.vencimientosRepository,
+            fechaDesde,
+            fechaHasta
+        );
     }
 }

@@ -35,6 +35,12 @@ export class ClientesRecpdetController {
         return this.clientesRecpdetService.analizarCuotasPendientes(codCredito);
     }
 
+    @Get('creditos-vencidos/:diasAtraso')
+    async obtenerCreditosPorDiasAtraso(@Param('diasAtraso') diasAtraso: string): Promise<CreditosVencidosDto> {
+        // Obtiene créditos con días de atraso mayores o iguales al parámetro
+        return this.clientesRecpdetService.obtenerCreditosPorDiasAtraso(Number(diasAtraso));
+    }
+
     @Get('creditos-vencidos')
     async obtenerCreditosVencidos(@Query() filtros: FiltrosCreditosVencidosDto): Promise<CreditosVencidosDto> {
         return this.clientesRecpdetService.obtenerCreditosVencidosOptimizado(

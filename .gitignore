@@ -2,3 +2,5 @@ node_modules/
 dist/
 dist/tsconfig.build.tsbuildinfo
 firebase-config.ts
+src/config/firebase-service-account.json
+

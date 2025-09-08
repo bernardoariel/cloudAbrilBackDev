@@ -306,4 +306,15 @@ export class ClientesRecpdetService {
             fechaHasta
         );
     }
+
+    async obtenerCreditosPorDiasAtraso(
+        diasAtraso: number
+    ): Promise<CreditosVencidosDto> {
+        // Importamos dinámicamente para evitar problemas de dependencia circular
+        const { obtenerCreditosPorDiasAtraso } = require('./utils/creditos-por-dias-atraso-exacto');
+        return obtenerCreditosPorDiasAtraso(
+            this.vencimientosRepository,
+            diasAtraso
+        );
+    }
 }

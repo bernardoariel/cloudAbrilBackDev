@@ -10,7 +10,7 @@ export class ClientesRecProvService {
   constructor(
     @InjectRepository(ClienteRecProv, 'sqlserverConnection')
     private readonly clienteRecProvRepository: Repository<ClienteRecProv>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<ClienteRecProv[]> {
     try {
@@ -33,7 +33,7 @@ export class ClientesRecProvService {
   async findByFecha(fechaDesde: Date, fechaHasta: Date): Promise<ClienteRecProv[]> {
     try {
       this.logger.log(`Buscando registros desde ${fechaDesde} hasta ${fechaHasta}`);
-      
+
       return this.clienteRecProvRepository
         .createQueryBuilder('recibo')
         .where('recibo.Fecha BETWEEN :desde AND :hasta', { desde: fechaDesde, hasta: fechaHasta })
@@ -48,7 +48,7 @@ export class ClientesRecProvService {
   async findReciboCompleto(codSucRecibo: string) {
     try {
       const queryRunner = this.clienteRecProvRepository.manager.connection.createQueryRunner();
-      
+
       const query = `
         SELECT 
           r.CodSucRecibo,
@@ -82,10 +82,10 @@ export class ClientesRecProvService {
         ) co ON c.CodCliente = co.CodCliente
         WHERE r.CodSucRecibo = @P0
       `;
-      
+
       const result = await queryRunner.query(query, [codSucRecibo]);
       await queryRunner.release();
-      
+
       return result[0]; // Retornar solo el primer resultado
     } catch (error) {
       this.logger.error('Error en findReciboCompleto:', error);
@@ -119,6 +119,7 @@ export class ClientesRecProvService {
         'recibo.Fecha',
         'recibo.MontoPagado',
         'recibo.Estado',
+        'recibo.SaldoReal',
         'recibo.CodForPago',
         'cliente.Nombre',
         'cliente.CodSucursal',

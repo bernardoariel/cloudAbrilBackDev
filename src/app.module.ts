@@ -29,6 +29,7 @@ import { ClientesRecProvModule } from './clientes-recprov/clientes-recprov.modul
 import { ClientesCreditosVencimientosModule } from './clientes-creditos-vencimientos/clientes-creditos-vencimientos.module';
 import { ClientesRecPagModule } from './clientes-recpag/clientes-recpag.module';
 import { ClientesRecpdetModule } from './clientes-recpdet/clientes-recpdet.module';
+import { ClientesRecProvDetModule } from './clientes-recprov-det/clientes-recprov-det.module';
 import { LoginModule } from './login/login.module';
 import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
 
@@ -93,6 +94,7 @@ import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
     ClientesCreditosVencimientosModule,
     ClientesRecPagModule,
     ClientesRecpdetModule,
+    ClientesRecProvDetModule,
     LoginModule,
     MercadoPagoModule
   ],

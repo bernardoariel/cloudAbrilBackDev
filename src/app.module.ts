@@ -30,6 +30,7 @@ import { ClientesCreditosVencimientosModule } from './clientes-creditos-vencimie
 import { ClientesRecPagModule } from './clientes-recpag/clientes-recpag.module';
 import { ClientesRecpdetModule } from './clientes-recpdet/clientes-recpdet.module';
 import { LoginModule } from './login/login.module';
+import { MercadoPagoModule } from './mercado-pago/mercado-pago.module';
 
 
 @Module({
@@ -92,7 +93,8 @@ import { LoginModule } from './login/login.module';
     ClientesCreditosVencimientosModule,
     ClientesRecPagModule,
     ClientesRecpdetModule,
-    LoginModule
+    LoginModule,
+    MercadoPagoModule
   ],
   controllers: [AppController],
   providers: [AppService],

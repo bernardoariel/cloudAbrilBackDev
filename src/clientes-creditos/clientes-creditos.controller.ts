@@ -29,6 +29,21 @@ export class ClientesCreditosController {
     return this.clientesCreditosService.findByCodClienteWithSaldo(+codCliente, condicion);
   }
 
+  @Get('cliente/:codCliente/con-recibos')
+  findByCodClienteConRecibos(@Param('codCliente') codCliente: number) {
+    return this.clientesCreditosService.findByCodClienteConRecibos(+codCliente);
+  }
 
+  @Get('cliente/:codCliente/con-recibo')
+  findByCodClienteConRecibo2(@Param('codCliente') codCliente: number) {
+    // Esta ruta es la que intentas usar en tu aplicación
+    // Usará el método modificado que solo agrega el codReciboPr
+    return this.clientesCreditosService.findByCodClienteConRecibos(+codCliente);
+  }
+
+  @Get('credito/:codCredito/con-recibo')
+  findByCodCreditoConRecibo(@Param('codCredito') codCredito: string) {
+    return this.clientesCreditosService.findByCodCreditoConRecibo(codCredito);
+  }
 
 } 

@@ -8,5 +8,6 @@ import { ClientesRecProvController } from './clientes-recprov.controller';
   imports: [TypeOrmModule.forFeature([ClienteRecProv], 'sqlserverConnection')],
   providers: [ClientesRecProvService],
   controllers: [ClientesRecProvController],
+  exports: [ClientesRecProvService], // Exportamos el servicio para que pueda ser usado en otros módulos
 })
-export class ClientesRecProvModule {} 
+export class ClientesRecProvModule { } 
